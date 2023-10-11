@@ -1,0 +1,259 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns = "http://www.w3.org/1999/xhtml"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+	<h:head>
+		<meta charset="utf-8" />
+		<title>Zaposleni Profil</title>
+	</h:head>
+	<h:body style="text-align: center; color: white;background-color:LightGrey">
+		<div>#{zaposleniController.loadKorisnik()}
+				<h1>Zaposleni</h1>
+				<div style="background-color:grey; margin: 2%; padding: 1%; border: 10px solid blue">
+				<h1>Zaposleni: #{zaposleniController.profil.ime} #{zaposleniController.profil.prezime}</h1>
+				<h2>Username: #{zaposleniController.profil.korisnickoIme}</h2>
+				<h2>Pozicija: #{zaposleniController.profil.pozicija}</h2>
+			
+				<h:form>
+				<h3>Promeni platu</h3>
+					<div>
+						<h:outputLabel value="JMBG Radnik-a" />
+						<h:inputText value="#{zaposleniController.zaposleni.jmbg}"/>
+						<h:outputLabel value="Nova plata: " />
+						<h:inputText value="#{zaposleniController.zaposleni.plata}" />
+						<h:commandButton value="Promeni platu" action="#{zaposleniController.promeniPlatu()}"/>
+					</div>
+					<h3>Izbrisi radnika</h3>
+					<div>
+						<h:outputLabel value="JMBG Radnik-a" />
+						<h:inputText value="#{zaposleniController.removejmbg}" />
+						<h:commandButton value="Remove" action="#{zaposleniController.obrisiZaposlenog(zaposleniController.removejmbg)}"/>
+					</div>
+					<div>
+					</div>
+	               <div>
+	                  <h:dataTable value="#{zaposleniController.readZaposleni()}" var="k"
+	                        styleClass="order-table"
+	                        headerClass="order-table-header"
+	                        rowClasses="order-table-odd-row,order-table-even-row"
+	                    	style="padding: 1%; color: black; font-size:23px; margin-top:30px; background-color:white; text-align:center; border-spacing: 5px; width:100%; border:3px solid Blue;">
+	                  
+	                        <h:column style="width: 100%;">
+	                           <f:facet name="header" style="padding:1%">
+	                              <label style="color: blue; font-weight:bold;">JMBG</label>
+	                           </f:facet>
+	                           <h:outputText value="#{k.jmbg}"/>
+	                        </h:column>
+	                        
+	                        <h:column style="width: 100%">
+	                           <f:facet name="header" style="padding:1%">
+	                              <label style="color: blue; font-weight:bold">Ime</label>
+	                           </f:facet>
+	                           <h:outputText value="#{k.ime}"/>
+	                        </h:column>
+	                        
+	                        <h:column style="width: 100%">
+	                           <f:facet name="header" style="padding:1%; border-bottom: 1px solid blue">
+	                              <label style="color: blue; font-weight:bold">Prezime</label>
+	                           </f:facet>
+	                           <h:outputText value="#{k.prezime}"/>
+	                        </h:column>
+	                        
+	                        <h:column style="width: 100%">
+	                           <f:facet name="header" style="padding:1%">
+	                              <label style="color: blue; font-weight:bold">Radno Mesto</label>
+	                           </f:facet>
+	                           <h:outputText value="#{k.pozicija}" />
+	                        </h:column>
+	                        
+	                        <h:column style="width: 100%">
+	                           <f:facet name="header" style="padding:1%">
+	                              <label style="color: blue; font-weight:bold">Plata</label>
+	                           </f:facet>
+	                           <h:outputText value="#{k.plata}"/>
+	                       </h:column>
+	                  </h:dataTable>
+	               </div>
+				</h:form>
+			</div>
+			
+			<div style="background-color:grey; margin: 2%; padding: 1%; border: 10px solid red">
+				<h2>Iznajmi knjigu</h2>
+				<div>
+				<h:form>
+					<p><h:outputLabel value="ID Clanske karte" /></p>
+					<p><h:inputText value="#{zaposleniController.idic}" /></p>
+					<p><h:outputLabel value="ID Knjige" /></p>
+					<p><h:inputText value="#{zaposleniController.idk}" /></p>
+					<p><h:commandButton value="Rezervisi knjigu" action="#{zaposleniController.iznajmi()}" ></h:commandButton></p>
+						
+					</h:form>
+				</div>
+				<h2> Dodaj knjigu </h2>
+				<div>
+				<h:form>
+				<h:panelGrid columns="2" cellpadding="5">
+				<h:outputLabel value="ID Knjige" />
+				<h:inputText value="#{zaposleniController.IDKnjige}" />
+				<h:outputLabel value="Autor" />
+				<h:inputText value="#{zaposleniController.autorKnjige}" />
+				<h:outputLabel value="Naslov" />
+				<h:inputText value="#{zaposleniController.naslovKnjige}" />
+				<h:commandButton value="Dodaj Knjigu" action="#{zaposleniController.dodajknjigu()}"/>
+				</h:panelGrid>
+				</h:form>
+				</div>
+				
+				<h2>Iznajmljene i rezervisane knjige</h2>
+				<h:form>
+					<h:dataTable value="#{zaposleniController.readAllFor(2)}" var="k"
+			    			styleClass="order-table"
+			    			headerClass="order-table-header"
+			    			rowClasses="order-table-odd-row,order-table-even-row"
+			    				style="padding: 1%; color: black; font-size:23px; margin-top:30px; background-color:White; text-align:center; border-spacing: 5px; width:100%; border:3px solid red;">
+			    	
+				    		<h:column style="width: 100%;">
+				    			<f:facet name="header" style="padding:1%">
+				    				<label style="color:red; font-weight:bold;">ID Knjige</label>
+				    			</f:facet>
+				    			<h:outputText value="#{k.idKnjiga}"/>
+				    		</h:column>
+							<h:column style="width: 100%">
+				    			<f:facet name="header" style="padding:1%">
+				    				<label style="color:red; font-weight:bold">Autor</label>
+								</f:facet>
+				    			<h:outputText value="#{k.autor}"/>
+				    		</h:column>
+				    		<h:column style="width: 100%">
+				    			<f:facet name="header" style="padding:1%; border-bottom: 1px solid blue">
+				    				<label style="color: red; font-weight:bold">Naslov</label>
+								</f:facet>
+				    			<h:outputText value="#{k.naslov}"/>
+				    		</h:column>
+				    		<h:column style="width: 100%">
+				    			<f:facet name="header" style="padding:1%; border-bottom: 1px solid blue">
+				    				<label style="color: red; font-weight:bold">Rezervisana</label>
+								</f:facet>
+				    			<h:outputText value="#{k.isRezervisana}"/>
+				    		</h:column>
+				    		<h:column style="width: 100%">
+				    			<f:facet name="header" style="padding:1%; border-bottom: 1px solid blue">
+				    				<label style="color: red; font-weight:bold">Dostupna</label>
+								</f:facet>
+				    			<h:outputText value="#{k.isDostupna}"/>
+				    		</h:column>
+				    		<h:column style="width: 100%">
+				    			<f:facet name="header" style="padding:1%; border-bottom: 1px solid blue">
+				    				<label style="color:red; font-weight:bold">Rezervisao</label>
+								</f:facet>
+				    			<h:outputText value="#{k.rezervisao}"/>
+				    		</h:column>
+				    				<h:column style="width: 100%">
+				    			<f:facet name="header" style="padding:1%; border-bottom: 1px solid blue">
+				    				<label style="color: red; font-weight:bold">Iznajmio</label>
+								</f:facet>
+				    			<h:outputText value="#{k.iznajmio}"/>
+				    		</h:column>
+
+			    	</h:dataTable>
+				</h:form>
+			</div>
+			
+			<div style="background-color:grey; margin: 2%; padding: 1%; border: 10px solid lime">
+				<h2>Dete</h2>
+				
+				<h:form>
+				<h3>Produzi clanarinu</h3>
+					<div>
+						<h:outputLabel value="ID Clanske karte" />
+						<h:inputText value="#{deteController.dete.idClanskeKarte}" />
+						<h:commandButton value="Produzi" action="#{deteController.produziClanarinu()}"/>
+					</div>
+					<div>
+					
+						<h2> Registracija deteta </h2>
+						<h:panelGrid columns="2" cellpadding="5">
+						<h:outputLabel value="ID Clanske karte" />
+						<h:inputText value="#{deteController.deteregid}" />
+						<h:outputLabel value="Ime" />
+						<h:inputText value="#{deteController.deteregime}" />
+						<h:outputLabel value="Ime roditelja" />
+						<h:inputText value="#{deteController.deteimeroditeljareg}" />
+						<h:outputLabel value="Prezime" />
+						<h:inputText value="#{deteController.deteprezimereg}" />
+						<h:outputLabel value="Broj godina" />
+						<h:inputText value="#{deteController.detebrojgodinareg}" />
+						<h:outputLabel value="Korisnicko ime" />
+						<h:inputText value="#{deteController.detekorisnickoimereg}" />
+						<h:outputLabel value="Password" />
+						<h:inputText value="#{deteController.detepasswordreg}" />
+						<h:commandButton value="DODAJ" action="#{deteController.deteCreate()}"/>
+						</h:panelGrid>
+					</div>
+	               <div>
+	                  <h:dataTable value="#{deteController.readAll()}" var="k"
+	                        styleClass="order-table"
+	                        headerClass="order-table-header"
+	                        rowClasses="order-table-odd-row,order-table-even-row"
+	                        style="padding: 1%; color: black; font-size:23px; margin-top:30px; background-color:white; text-align:center; border-spacing: 5px; width:100%; border:5px solid lime;">
+	                  
+	                        <h:column style="width: 100%;">
+	                           <f:facet name="header" style="padding:1%">
+	                              <label style="color: lime; font-weight:bold;">ID Clanske karte</label>
+	                           </f:facet>
+	                           <h:outputText value="#{k.idClanskeKarte}"/>
+	                        </h:column>
+	                        
+	                        <h:column style="width: 100%">
+	                           <f:facet name="header" style="padding:1%">
+	                              <label style="color: lime; font-weight:bold">Ime</label>
+	                           </f:facet>
+	                           <h:outputText value="#{k.ime}"/>
+	                        </h:column>
+	                        
+	                        <h:column style="width: 100%">
+	                           <f:facet name="header" style="padding:1%; border-bottom: 1px solid blue">
+	                              <label style="color: lime; font-weight:bold">Ime Roditelja</label>
+	                           </f:facet>
+	                           <h:outputText value="#{k.imeRoditelja}"/>
+	                        </h:column>
+	                        
+	                        <h:column style="width: 100%">
+	                           <f:facet name="header" style="padding:1%">
+	                              <label style="color: lime; font-weight:bold">Prezime</label>
+	                           </f:facet>
+	                           <h:outputText value="#{k.prezime}" />
+	                        </h:column>
+	                        
+	                        <h:column style="width: 100%">
+	                           <f:facet name="header" style="padding:1%">
+	                              <label style="color: lime; font-weight:bold">Broj godina</label>
+	                           </f:facet>
+	                           <h:outputText value="#{k.brojGodina}"/>
+	                        </h:column>
+	                       <h:column style="width: 100%">
+	                           <f:facet name="header" style="padding:1%">
+	                              <label style="color: lime; font-weight:bold">Korisnicko Ime</label>
+	                           </f:facet>
+	                           <h:outputText value="#{k.korisnickoIme}"/>
+	                        </h:column>
+	                              <h:column style="width: 100%">
+	                           <f:facet name="header" style="padding:1%">
+	                              <label style="color: lime; font-weight:bold">Vazenje clanarine</label>
+	                           </f:facet>
+	                           <h:outputText value="#{k.clanarina}"/>
+	                        </h:column>
+	                  </h:dataTable>
+	               </div>
+				</h:form>
+			</div>
+			
+			
+		</div>
+	</h:body>
+</html>
